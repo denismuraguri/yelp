@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import RestaurantFinder from "../apis/RestaurantFinder";
 
 const UpdateRestaurant = (props) => {
   const { id } = useParams();
-  //let history = useHistory();
+  let history = useHistory();
     //const { restaurants } = useContext(RestaurantContext);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
@@ -29,8 +29,8 @@ const UpdateRestaurant = (props) => {
       location,
       price_range: priceRange,
     });
-    console.log(updatedRestaurant)
-    //history.push("/");
+    //console.log(updatedRestaurant)
+    history.push("/");
   };
 
   return (
