@@ -28,7 +28,9 @@ export default function RestaurantsDetailPage() {
         <div>
             {/*{selectedRestaurant && <StarRating rating={4.5} /> }*/}
             {selectedRestaurant && (
-                <>        
+                <>      
+                <h1 className="text-center display-1">{selectedRestaurant.restaurants.name}
+                </h1>  
                 <div className="mt-3">
                     <Reviews reviews={selectedRestaurant.reviews} />
                 </div>
