@@ -102,14 +102,22 @@ app.get("/api/v1/restaurants/:id", async(req, res) => {
         //const results = await db.query(`select * from restaurants where id = ${req.params.id}`);
                 
         //using parameterized query to avoid sql injection
-        const results = await db.query("select * from restaurants where id = $1", [req.params.id]);
-        console.log(results.rows[0]);
+        const restaurant = await db.query("select * from restaurants where id = $1", [req.params.id]);
+        console.log(restaurant.rows[0]);
         //const results = await db.query("select $2 from restaurants where id = $1", [req.params.id, "name"]);
+
+
+        const reviews = await db.query(
+            "select * from reviews where restaurant_id = $1",
+            [req.params.id]
+          );
+          console.log(reviews);
 
         res.status(200).json({ 
             status: "success",
             data: {
-                restaurants: results.rows[0]
+                restaurants: restaurant.rows[0],
+                reviews: reviews.rows,
             }
         }) 
         
