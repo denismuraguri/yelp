@@ -1,9 +1,33 @@
 import React, { useState } from 'react'
+import { useParams, useHistory, useLocation } from 'react-router-dom';
+import RestaurantFinder from '../apis/RestaurantFinder';
 
 export default function AddReview() {
-    const [name, setName] = useState("");
-    const [reviewText, setReviewText] = useState("");
-    const [rating, setRating] = useState("Rating");
+  const { id } = useParams();
+  console.log(id);
+  const history = useHistory();
+  //console.log(history);
+  const location = useLocation()
+  
+  const [name, setName] = useState("");
+  const [reviewText, setReviewText] = useState("");
+  const [rating, setRating] = useState("Rating");
+
+  const handleSubmitReview = async(e) => {
+      e.preventDefault()
+      try{
+        const response = await RestaurantFinder.post(`/${id}/addReview`, {
+          name,
+          review: reviewText,
+          rating
+        })
+        history.push("/");
+        history.push(location.pathname);
+        console.log(response)
+      } catch(err){
+        console.log(err)
+      }
+    }
 
     return (
         <div className="mb-2">
@@ -47,12 +71,18 @@ export default function AddReview() {
           ></textarea>
         </div>
         <button
+         onClick={handleSubmitReview}
           type="submit"
-          //onClick={handleSubmitReview}
           className="btn btn-primary"
         >
           Submit
         </button>
+        <button 
+        //onClick={(e) => handleUpdate(e, restaurant.id)} 
+        className="btn btn-warning">Update</button>
+        <button 
+        //onClick={ (e) => handleDelete(e, restaurant.id)} 
+        className="btn btn-danger">Delete</button>
       </form>
     </div>
     )
