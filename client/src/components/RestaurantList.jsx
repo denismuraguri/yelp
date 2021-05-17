@@ -2,6 +2,8 @@ import React, {useContext, useEffect} from 'react'
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from '../context/RestaurantContext';
 import { useHistory } from "react-router-dom"
+import StarRating from "./StarRating"
+
 
 export default function RestaurantList(props) {
     const {restaurants, setRestaurants } = useContext(RestaurantsContext);
@@ -40,6 +42,17 @@ export default function RestaurantList(props) {
             history.push(`/restaurants/${id}/update`)
         }
 
+        const renderRating = (restaurant)=> {
+            if (!restaurant.count){
+                return <span className="text-warning">0 reviews</span>
+            }
+            return<>
+            <StarRating rating={restaurant.id} />
+            <span className="tex-warning ml-1">({restaurant.count})</span>
+            </>
+            
+        }
+
         
 
         /*const handleDelete = async (id) => {
@@ -69,7 +82,7 @@ export default function RestaurantList(props) {
                                 <td>{restaurant.name}</td>
                                 <td>{restaurant.location}</td>
                                 <td>{"$".repeat(restaurant.price_range)}</td>
-                                <td>reviews</td>
+                                <td>{renderRating(restaurant)}</td>
                                 <td><button onClick={(e) => handleUpdate(e, restaurant.id)} className="btn btn-warning">Update</button></td>
                                 <td><button onClick={ (e) => handleDelete(e, restaurant.id)} className="btn btn-danger">Delete</button></td>
                             </tr>

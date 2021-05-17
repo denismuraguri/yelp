@@ -65,16 +65,19 @@ app.post("/api/v1/restaurants", async(req, res) => {
 //GET ALL RESTAURANTS
 app.get("/api/v1/restaurants", async (req, res) => {
     //    console.log("route handler ran");
-
     try{
-        const results = await db.query("select * from restaurants");
+        //const results = await db.query("select * from restaurants");
+        const restaurantRatingsData = await db.query("select * from restaurants left join (select restaurant_id, COUNT(*), TRUNC(AVG(rating), 1) as avarage_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id;")
+        //console.log("results", results)
+        //console.log('restaurant data', restaurantRatingsData);
+        
         //console.log(results.rows);
-
         res.status(200).json({
         status: "success",
-        results: results.rows.length,
+        results: restaurantRatingsData.rows.length,
         data: {
-            restaurants: results.rows
+            restaurants: restaurantRatingsData.rows
+            //restaurants: results.rows
         },
         
     })
@@ -102,7 +105,8 @@ app.get("/api/v1/restaurants/:id", async(req, res) => {
         //const results = await db.query(`select * from restaurants where id = ${req.params.id}`);
                 
         //using parameterized query to avoid sql injection
-        const restaurant = await db.query("select * from restaurants where id = $1", [req.params.id]);
+        //const restaurant = await db.query("select * from restaurants where id = $1", [req.params.id]);
+        const restaurant = await db.query("select * from restaurants left join (select restaurant_id, COUNT(*), TRUNC(AVG(rating), 1) as avarage_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id where id = $1", [req.params.id]);
         console.log(restaurant.rows[0]);
         //const results = await db.query("select $2 from restaurants where id = $1", [req.params.id, "name"]);
 

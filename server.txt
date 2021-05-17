@@ -1,0 +1,21 @@
+ SELECT TRUNC(AVG(rating), 2) AS avarage_review from reviews;
+
+select count(*) from reviews;
+
+select count(rating) from reviews;
+
+select min(rating) from reviews;
+
+
+select max(rating) from reviews;
+
+select avg(rating) from reviews;
+
+
+select name, rating from reviews;
+select name as username, rating as restaurant_rating from reviews;
+
+
+select avg(rating) from reviews where restaurant_id = 89;
+select trunc(avg(rating)) from reviews where restaurant_id = 89;
+select trunc(avg(rating), 2) from reviews where restaurant_id = 89;
